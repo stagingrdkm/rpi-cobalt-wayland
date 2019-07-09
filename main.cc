@@ -19,12 +19,23 @@
 #include "starboard/shared/signal/suspend_signals.h"
 #include "starboard/shared/starboard/link_receiver.h"
 #include "starboard/shared/wayland/application_wayland.h"
+#include "third_party/starboard/raspi/wayland/cobalt_source.h"
 
 extern "C" SB_EXPORT_PLATFORM int main(int argc, char** argv) {
   tzset();
   starboard::shared::signal::InstallCrashSignalHandlers();
   starboard::shared::signal::InstallSuspendSignalHandlers();
   starboard::shared::wayland::ApplicationWayland application;
+  // register custom type
+  gst_init(&argc, &argv);
+  GstElementFactory* srcFactory = gst_element_factory_find("cobaltsrc");
+  if (!srcFactory) {
+    gst_element_register(0, "cobaltsrc", GST_RANK_PRIMARY + 100,
+                         GST_COBALT_TYPE_SRC);
+  }
+  else {
+    gst_object_unref(srcFactory);
+  }
   int result = 0;
   {
     starboard::shared::starboard::LinkReceiver receiver(&application);

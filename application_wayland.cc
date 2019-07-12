@@ -53,6 +53,7 @@ static struct wl_registry_listener registry_listener = {&GlobalObjectAvailable,
 // Tizen application engine using the generic queue and a tizen implementation.
 ApplicationWayland::ApplicationWayland(float video_pixel_ratio)
     : video_pixel_ratio_(video_pixel_ratio) {
+     SbAudioSinkPrivate::Initialize();
 }
 
 void ApplicationWayland::InjectInputEvent(SbInputData* data) {
@@ -122,6 +123,7 @@ void ApplicationWayland::Teardown() {
 
   wl_display_flush(display_);
   wl_display_disconnect(display_);
+    SbAudioSinkPrivate::TearDown();
 
   // Close wakeup event
   close(wakeup_fd_);

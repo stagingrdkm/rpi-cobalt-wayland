@@ -54,6 +54,7 @@
       '-I=/usr/include',
       '-I=/usr/include/interface/vcos/pthreads',
       '-I=/usr/include/interface/vmcs_host/linux',
+      '<!@(pkg-config --cflags gstreamer-1.0 gstreamer-app-1.0)'
     ],
     'linker_flags': [
       '-Wl,-rpath /usr/lib',
@@ -106,6 +107,7 @@
       '-lGLESv2',
       '-lwayland-egl',
       '-lwayland-client',
+      '<!@(pkg-config --libs alsa gstreamer-1.0 gstreamer-app-1.0)'
     ],
     'conditions': [
       ['cobalt_fastbuild==0', {

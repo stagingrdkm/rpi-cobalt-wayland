@@ -62,7 +62,7 @@ GstCaps* VideoDecoder::CustomInitialize()
   g_object_set(Source, "min-percent", 60u, "max-bytes", 256ull << 10, NULL);
 
   const char* type = nullptr;
-  GstCaps* caps;
+  GstCaps* caps = nullptr;
   switch (Player.GetVideoCodec()) {
   case kSbMediaVideoCodecH264:
     caps = gst_caps_new_simple("video/x-h264",

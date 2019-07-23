@@ -21,13 +21,5 @@
     'arm_neon': 1,
     'arch_64bit': 'n',
     'arm_float_abi': 'hard',
-
-    'compiler_flags': [
-      '-march=armv7ve',
-      '-mthumb',
-      '-mcpu=cortex-a7',
-      '-mfloat-abi=hard',
-      '-mfpu=neon-vfpv4',
-    ],
   },
 }

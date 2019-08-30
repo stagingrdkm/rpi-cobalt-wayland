@@ -86,7 +86,7 @@ void DisplayGraph(GstBin* bin, const char* fileName)
 SbPlayer SbPlayerPrivate::CreatePlayer(SbWindow window,
   SbMediaVideoCodec video_codec, SbMediaAudioCodec audio_codec,
   SbTime duration_pts, SbDrmSystem drm_system,
-  const SbMediaAudioHeader* audio_header,
+  const SbMediaAudioSampleInfo* audio_header,
   SbPlayerDeallocateSampleFunc sample_deallocate_func,
   SbPlayerDecoderStatusFunc decoder_status_func,
   SbPlayerStatusFunc player_status_func,
@@ -114,8 +114,15 @@ bool SbPlayerPrivate::OutputModeSupported(SbPlayerOutputMode outputMode,
                                           SbMediaVideoCodec codec,
                                           SbDrmSystem drmSystem)
 {
+ int profile = -1;
+  int level = -1;
+  int bit_depth = 8;
+  SbMediaPrimaryId primary_id = kSbMediaPrimaryIdUnspecified;
+  SbMediaTransferId transfer_id = kSbMediaTransferIdUnspecified;
+  SbMediaMatrixId matrix_id = kSbMediaMatrixIdUnspecified;
   const bool result = (outputMode == kSbPlayerOutputModePunchOut)
-    && SbMediaIsVideoSupported(codec, 0, 0, 0, 0, 0, kSbMediaTransferIdUnspecified);
+    && SbMediaIsVideoSupported(codec, profile, level, bit_depth, primary_id, \
+                               transfer_id, matrix_id,0, 0, 0, 0, 0);
   SB_UNREFERENCED_PARAMETER(outputMode);
   SB_UNREFERENCED_PARAMETER(codec);
   SB_UNREFERENCED_PARAMETER(drmSystem);
@@ -277,7 +284,7 @@ SbPlayerPrivate::SbPlayerPrivate(SbWindow window,
   SbMediaAudioCodec audio_codec,
   SbTime duration_pts,
   SbDrmSystem drm_system,
-  const SbMediaAudioHeader* audio_header,
+  const SbMediaAudioSampleInfo* audio_header,
   SbPlayerDeallocateSampleFunc sample_deallocate_func,
   SbPlayerDecoderStatusFunc decoder_status_func,
   SbPlayerStatusFunc player_status_func,

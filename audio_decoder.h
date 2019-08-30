@@ -9,12 +9,12 @@
 class AudioDecoder : public AbstractDecoder
 {
 public:
-  AudioDecoder(SbPlayerPrivate& player, const SbMediaAudioHeader* header);
+  AudioDecoder(SbPlayerPrivate& player, const SbMediaAudioSampleInfo* header);
   virtual ~AudioDecoder() {};
 
 private:
   virtual GstCaps* CustomInitialize() override;
-  SbMediaAudioHeader Header;
+  SbMediaAudioSampleInfo Header;
   GstBuffer* AudioSpecificConfig;
 };
 

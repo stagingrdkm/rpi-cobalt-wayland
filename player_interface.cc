@@ -65,7 +65,7 @@
 //
 // |audio_header|: Note that the caller must provide a populated |audio_header|
 //   if the audio codec is |kSbMediaAudioCodecAac|. Otherwise, |audio_header|
-//   can be NULL. See media.h for the format of the |SbMediaAudioHeader| struct.
+//   can be NULL. See media.h for the format of the |SbMediaAudioSampleInfo| struct.
 #if SB_API_VERSION >= 6
 //   Note that |audio_specific_config| is a pointer and the content it points to
 //   is no longer valid after this function returns.  The implementation has to
@@ -107,7 +107,10 @@ SbPlayerCreate(SbWindow window,
                SbMediaVideoCodec videoCodec,
                SbMediaAudioCodec audioCodec,
                SbDrmSystem drmSystem,
-               const SbMediaAudioHeader* audioHeader,
+               const SbMediaAudioSampleInfo* audioHeader,
+       #if SB_API_VERSION >= 11
+               const char* max_video_capabilities,
+       #endif
                SbPlayerDeallocateSampleFunc sampleDeallocateFunc,
                SbPlayerDecoderStatusFunc decoderStatusFunc,
                SbPlayerStatusFunc playerStatusFunc,
@@ -233,6 +236,26 @@ SB_EXPORT void SbPlayerWriteSample(
                       video_sample_info, sample_drm_info);
 }
 
+void SbPlayerWriteSample2(
+ SbPlayer player,
+ SbMediaType sample_type,
+ const SbPlayerSampleInfo* sample_infos,
+ int number_of_sample_infos)
+{
+  SB_DCHECK(number_of_sample_infos == 1);
+  const void* sample_buffers[] = {sample_infos->buffer};
+  const int sample_buffer_sizes[] = {sample_infos->buffer_size};
+  int number_of_sample_buffers = 1;
+  SbTime sample_timestamp = sample_infos->timestamp;
+  const SbMediaVideoSampleInfo*  video_sample_info = &sample_infos->video_sample_info;
+  const SbDrmSampleInfo* sample_drm_info = sample_infos->drm_info;
+  //SbMediaType sample_type = sample_infos->type;
+  player->WriteSample(sample_type, sample_buffers, sample_buffer_sizes,
+                      number_of_sample_buffers, sample_timestamp,
+                      video_sample_info, sample_drm_info);
+}
+
+
 // Writes a marker to |player|'s input stream of |stream_type| indicating that
 // there are no more samples for that media type for the remainder of this
 // media stream. This marker is invalidated, along with the rest of the stream's
@@ -332,8 +355,15 @@ SB_EXPORT bool SbMediaIsSupported(SbMediaVideoCodec videoCodec,
   if (keySystem) {
     SB_DLOG(INFO) << "pretending to support " << keySystem;
   }
+  int profile = -1;
+  int level = -1;
+  int bit_depth = 8;
+  SbMediaPrimaryId primary_id = kSbMediaPrimaryIdUnspecified;
+  SbMediaTransferId transfer_id = kSbMediaTransferIdUnspecified;
+  SbMediaMatrixId matrix_id = kSbMediaMatrixIdUnspecified;
   const bool result = SbMediaIsAudioSupported(audioCodec, 0)
-    && SbMediaIsVideoSupported(videoCodec, 0, 0, 0, 0, 0, kSbMediaTransferIdUnspecified);
+    && SbMediaIsVideoSupported(videoCodec, profile, level, bit_depth, primary_id, \
+                               transfer_id, matrix_id,0, 0, 0, 0, 0);
   return result;
 }
 

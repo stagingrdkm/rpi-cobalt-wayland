@@ -51,7 +51,7 @@ class RaspiwaylandPlatformConfig(platform_configuration.PlatformConfiguration):
 
   def GetEnvironmentVariables(self):
     env_variables = build.GetHostCompilerEnvironment(
-        clang.GetClangSpecification())
+        None, False)
     env_variables.update({
         'CC': os.environ['CC'],
         'CXX': os.environ['CXX'],

@@ -55,7 +55,7 @@ SB_EXPORT bool SbMediaIsAudioSupported(SbMediaAudioCodec audioCodec,
 }
 
 AudioDecoder::AudioDecoder(SbPlayerPrivate& player,
-                           const SbMediaAudioHeader* header)
+                           const SbMediaAudioSampleInfo* header)
   : AbstractDecoder(player, kSbMediaTypeAudio),
   Header(),
   AudioSpecificConfig(nullptr)

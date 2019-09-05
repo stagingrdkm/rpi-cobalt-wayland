@@ -48,6 +48,12 @@ const char* GetVideoCodecName(SbMediaVideoCodec codec)
 }
 
 SB_EXPORT bool SbMediaIsVideoSupported(SbMediaVideoCodec videoCodec,
+					int profile,
+                                       int level,
+                                       int bit_depth,
+                                       SbMediaPrimaryId primary_id,
+                                       SbMediaTransferId transfer_id,
+                                       SbMediaMatrixId matrix_id,
                                        int frameWidth,
                                        int frameHeight,
                                        int64_t bitrate,
@@ -56,10 +62,6 @@ SB_EXPORT bool SbMediaIsVideoSupported(SbMediaVideoCodec videoCodec,
                                        ,
                                        bool decode_to_texture_required
 #endif  // SB_API_VERSION >= 10
-#if SB_HAS(MEDIA_EOTF_CHECK_SUPPORT)
-                                       ,
-                                       SbMediaTransferId eotf
-#endif
                                        )
 {
   const bool result = (videoCodec == kSbMediaVideoCodecH264

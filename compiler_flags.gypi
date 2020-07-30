@@ -50,6 +50,8 @@
       # matters: Wall implies Wunused-parameter and Wno-unused-parameter
       # has no effect if specified before Wall.
       '-Wno-unused-parameter',
+      # fix for #if, #elif are not portable defines in gcc 9.3 or above
+      '-Wno-expansion-to-defined',
       
       '-I=/usr/include',
       '-I=/usr/include/interface/vcos/pthreads',

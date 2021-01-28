@@ -94,7 +94,7 @@ static void gst_cobalt_src_class_init(GstCobaltSrcClass* klass)
 
 static void gst_cobalt_src_init(GstCobaltSrc* src)
 {
-  GstCobaltSrcPrivate* priv = GST_COBALT_SRC_GET_PRIVATE(src);
+  GstCobaltSrcPrivate* priv = (GstCobaltSrcPrivate*)gst_cobalt_src_get_instance_private(src);
   src->priv = priv;
   src->priv->configured = FALSE;
   src->priv->pad_counter = 0;

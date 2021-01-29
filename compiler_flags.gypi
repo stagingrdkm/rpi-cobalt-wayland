@@ -53,7 +53,7 @@
       # fix for #if, #elif are not portable defines in gcc 9.3 or above
       '-Wno-expansion-to-defined',
       # fix for offsetof() usage
-      '-Wno-invalid-offsetof'
+      '-Wno-invalid-offsetof',
       
       '-I=/usr/include',
       '-I=/usr/include/interface/vcos/pthreads',
